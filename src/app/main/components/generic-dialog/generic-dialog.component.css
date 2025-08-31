@@ -1,0 +1,26 @@
+:host {
+  display: block;
+  max-width: 100%;
+}
+.dialog-body {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+.dialog-content {
+  min-width: 0;
+}
+.body-text,
+.body-html {
+  white-space: pre-line;
+  word-break: break-word;
+}
+.prompt-field {
+  margin-top: 1rem;
+}
+@media (max-width: 575px) {
+  .dialog-body {
+    grid-template-columns: 1fr;
+  }
+}

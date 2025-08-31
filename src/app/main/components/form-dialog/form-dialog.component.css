@@ -1,0 +1,62 @@
+:host {
+  display: block;
+  max-width: 100%;
+}
+.form-body {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+.form-content {
+  min-width: 0;
+}
+.form-text,
+.form-html {
+  white-space: pre-line;
+  word-break: break-word;
+}
+.form-group {
+  margin-top: 1rem;
+}
+.form-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr 1fr;
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.form-label {
+  font-weight: 600;
+}
+.req {
+  color: var(--red-500);
+  margin-left: 0.25rem;
+}
+.form-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+.form-checkbox {
+  padding-top: 0.4rem;
+}
+.form-error {
+  color: var(--red-500);
+  font-size: 0.85rem;
+}
+.form-hint {
+  color: var(--text-color-secondary);
+}
+@media (max-width: 767px) {
+  .form-body {
+    grid-template-columns: 1fr;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

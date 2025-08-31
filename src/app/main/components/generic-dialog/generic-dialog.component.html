@@ -1,0 +1,25 @@
+<div class="dialog-body">
+  <i *ngIf="data.icon" class="{{ iconMap[data.icon] }}" aria-hidden="true"></i>
+
+  <div class="dialog-content">
+    <p *ngIf="data.text" class="m-0 body-text">{{ data.text }}</p>
+    <div *ngIf="!data.text && data.html" class="body-html" [innerHTML]="data.html"></div>
+
+    <div *ngIf="data.type === 'prompt'" class="prompt-field">
+      <input pInputText [(ngModel)]="promptValue" [placeholder]="data.placeholder || ''" class="w-full" />
+    </div>
+  </div>
+</div>
+
+<p-footer>
+  <p-button *ngIf="data.type !== 'alert'"
+            (onClick)="onCancel()"
+            [label]="data.cancelLabel || 'Cancelar'"
+            styleClass="p-button-text">
+  </p-button>
+
+  <p-button (onClick)="onConfirm()"
+            [label]="data.okLabel || (data.type === 'confirm' ? 'Aceptar' : 'OK')"
+            [icon]="data.type==='confirm' ? 'pi pi-check' : 'pi pi-check-circle'">
+  </p-button>
+</p-footer>

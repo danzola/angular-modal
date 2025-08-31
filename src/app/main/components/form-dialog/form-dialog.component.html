@@ -1,0 +1,75 @@
+<div class="form-body">
+  <i *ngIf="data.icon" class="{{ iconMap[data.icon] }}" aria-hidden="true"></i>
+
+  <div class="form-content">
+    <p *ngIf="data.text" class="m-0 form-text">{{ data.text }}</p>
+    <div *ngIf="!data.text && data.html" class="form-html" [innerHTML]="data.html"></div>
+
+    <form [formGroup]="form" class="form-group" (ngSubmit)="onOk()">
+      <div class="form-grid">
+        <div class="form-field" *ngFor="let f of data.fields">
+          <label class="form-label" [attr.for]="f.key">
+            {{ f.label }} <span *ngIf="f.required" class="req">*</span>
+          </label>
+
+          <input *ngIf="['text','password','email'].includes(f.type)" pInputText [type]="f.type" class="w-full"
+            [id]="f.key" [placeholder]="f.placeholder || ''" [formControlName]="f.key" />
+
+          <textarea *ngIf="f.type === 'textarea'" pInputTextarea class="w-full" [rows]="f.rows || 4" [id]="f.key"
+            [placeholder]="f.placeholder || ''" [formControlName]="f.key"></textarea>
+
+          <p-inputNumber *ngIf="f.type === 'number'" [id]="f.key" [min]="$any(f.min)" [max]="$any(f.max)"
+            [step]="f.step ?? 1" [placeholder]="f.placeholder || ''" [inputId]="f.key" class="w-full"
+            [formControlName]="f.key">
+          </p-inputNumber>
+
+          <p-dropdown *ngIf="f.type === 'select'" [options]="f.options || []" optionLabel="label" optionValue="value"
+            [placeholder]="f.placeholder || 'Seleccione...'" formControlName="{{f.key}}" class="w-full">
+          </p-dropdown>
+
+          <p-multiSelect *ngIf="f.type === 'multiselect'" [options]="f.options || []" optionLabel="label"
+            defaultLabel="{{ f.placeholder || 'Seleccione...'}}" formControlName="{{f.key}}" class="w-full">
+          </p-multiSelect>
+
+          <div *ngIf="f.type === 'radio'" class="form-radio-group">
+            <div class="fpd-radio" *ngFor="let opt of (f.options || [])">
+              <p-radioButton [name]="f.key" [inputId]="f.key + '-' + opt.value" [value]="opt.value"
+                formControlName="{{f.key}}">
+              </p-radioButton>
+              <label [for]="f.key + '-' + opt.value">{{ opt.label }}</label>
+            </div>
+          </div>
+
+          <div *ngIf="f.type === 'checkbox'" class="form-checkbox">
+            <p-checkbox [binary]="true" formControlName="{{f.key}}"></p-checkbox>
+          </div>
+
+          <p-calendar *ngIf="['date','time','datetime'].includes(f.type)" [formControlName]="f.key" [showIcon]="true"
+            [touchUI]="true" [timeOnly]="f.type === 'time'" [showTime]="f.type === 'datetime'" [hourFormat]="'24'"
+            [inputId]="f.key" class="w-full">
+          </p-calendar>
+
+          <div *ngIf="f.type === 'file'">
+            <input [id]="f.key" type="file" class="w-full" [attr.multiple]="f.multiple ? '' : null"
+              (change)="onFileChange(f, $event)">
+          </div>
+
+          <div class="form-error" *ngIf="controlOf(f).touched && controlOf(f).invalid">
+            <span *ngIf="controlOf(f).errors?.['required']">Campo obligatorio.</span>
+            <span *ngIf="controlOf(f).errors?.['email']">Email inválido.</span>
+            <span *ngIf="controlOf(f).errors?.['min']">Mínimo: {{f.min}}</span>
+            <span *ngIf="controlOf(f).errors?.['max']">Máximo: {{f.max}}</span>
+            <span *ngIf="controlOf(f).errors?.['pattern']">Formato inválido.</span>
+          </div>
+
+          <small class="form-hint" *ngIf="f.hint">{{ f.hint }}</small>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<p-footer>
+  <p-button (onClick)="onCancel()" [label]="data.cancelLabel || 'Cancelar'" styleClass="p-button-text"></p-button>
+  <p-button (onClick)="onOk()" [label]="data.okLabel || 'Aceptar'" icon="pi pi-check"></p-button>
+</p-footer>
